@@ -1,0 +1,6 @@
+Zombie rotten_zombie 5 2
+Zombie elder_zombie 11 5
+Zombie flesh_zombie 22 10
+Orc orc_worker 25 15
+Orc orc_trooper 30 18
+Orc orc_warlord 50 20
