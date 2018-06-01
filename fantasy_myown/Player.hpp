@@ -15,8 +15,8 @@ private:
 public:
 	Player();
 	~Player();
-	void setLocation(int x, int y);
-	bool receivedDamage(int damage);
+	void setLocation(const int x, const int y);
+	bool receivedDamage(const int damage);
 	int getHP();
 	int getAtk();
 	int getLocX();

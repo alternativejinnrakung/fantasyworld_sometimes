@@ -11,5 +11,5 @@ public:
 
 	bool summon_world_clock(bool gameover);
 	char setInput();
+	int roundup(const double number);
 };
-

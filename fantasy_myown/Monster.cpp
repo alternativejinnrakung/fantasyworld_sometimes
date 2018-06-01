@@ -21,7 +21,7 @@ void Monster::setHP() {
 	this->init_monsterdata();
 	int type = rand() % (monster_data.size() / 4);
 
-	if (monster_data[type * 4] == "Zombie") {
+	if (monster_data[type * 4] == MONSTER_TYPE[0]) {
 		std::shared_ptr<Zombie> zom = std::make_shared<Zombie>();
 		zom->setType(monster_data[(type * 4) + 1]);
 		zom->setHP(stoi(monster_data[(type * 4) + 2]));
@@ -30,7 +30,7 @@ void Monster::setHP() {
 		attack = zom->getATK();
 		mons_type = zom->getType();
 	}
-	else if (monster_data[type * 4] == "Orc") {
+	else if (monster_data[type * 4] == MONSTER_TYPE[1]) {
 		std::shared_ptr<Orc> orc = std::make_shared<Orc>();
 		orc->setType(monster_data[(type * 4) + 1]);
 		orc->setHP(stoi(monster_data[(type * 4) + 2]));
@@ -75,7 +75,7 @@ std::string Monster::getType() {
 }
 
 void Monster::init_monsterdata() {
-	std::ifstream textfile("monster_data.txt");
+	std::ifstream textfile(TEXTNAME);
 	std::string line;
 	std::string token;
 
@@ -86,4 +86,12 @@ void Monster::init_monsterdata() {
 		}
 	}
 	PROMISE(!monster_data.empty());
+}
+
+void Monster::setLocX(const int x) {
+	locX = x;
+}
+
+void Monster::setLocY(const int y) {
+	locY = y;
 }

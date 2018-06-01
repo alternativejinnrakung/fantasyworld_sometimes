@@ -31,3 +31,15 @@ bool Clock::summon_world_clock(bool gameover) {
 char Clock::setInput() {
 	return static_cast<char>(_getche());
 }
+
+int Clock::roundup(const double number) {
+	if (number > 0) {
+		return static_cast<int>(number + 1.0);
+	}
+	else if (number < 0) {
+		return static_cast<int>(number - 1.0);
+	}
+	else {
+		return 0;
+	}
+}

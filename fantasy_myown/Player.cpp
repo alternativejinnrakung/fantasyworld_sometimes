@@ -10,12 +10,12 @@ Player::~Player()
 {
 }
 
-void Player::setLocation(int x, int y) {
+void Player::setLocation(const int x, const int y) {
 	locX = x;
 	locY = y;
 }
 
-bool Player::receivedDamage(int damage) {
+bool Player::receivedDamage(const int damage) {
 	health -= damage;
 	if (health <= 0) {
 		health = 0;

@@ -86,24 +86,12 @@ void Map::drawMap() {
 void Map::updateMap() {
 	this->activeInput();
 	for (int i = 0; i < MONS_AMOUNT; i++) {
-		if (monsters[i]->getHealth() == 0) {
-			worldmap[monsters[i]->getLocX()][monsters[i]->getLocY()] = 0;
-			monsters[i]->setHP();
-			monsters[i]->setLocation(worldmap);
-		}
-		worldmap[monsters[i]->getLocX()][monsters[i]->getLocY()] = monsters[i]->getHealth();
+		this->respawnWhenDie(i);
+		this->movementRandomizer(i);
 	}
-	drawMap();
+	this->drawMap();
 	for (int i = 0; i < MONS_AMOUNT; i++) {
-		if (monsters[i]->getLocX() == player->getLocX() && monsters[i]->getLocY() == player->getLocY()) {
-			cout << "Player fight with " << monsters[i]->getType() << endl;
-			cout << monsters[i]->getType() << ": " << monsters[i]->getHealth() << " - " << player->getAtk() << " = ";
-			monsters[i]->reduceHP(player->getAtk());
-			cout << monsters[i]->getHealth() << endl;
-			cout << "Player: " << player->getHP() << " - " << monsters[i]->getAtk() << " = ";
-			gameover = player->receivedDamage(monsters[i]->getAtk());
-			cout << player->getHP() << endl;
-		}
+		this->enterDialogue(i);
 	}
 	input = 0;
 }
@@ -131,4 +119,63 @@ void Map::activeInput() {
 		}
 	}
 	playermap[player->getLocX()][player->getLocY()] = player->getHP();
+}
+
+void Map::moveToPlayer_TypeA(const int mons_id) {
+	int xpath = worldclock->roundup(static_cast<double>(player->getLocX() - monsters[mons_id]->getLocX()) / MAP_WIDTH);
+	int ypath = worldclock->roundup(static_cast<double>(player->getLocY() - monsters[mons_id]->getLocY()) / MAP_HEIGHT);
+
+	worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY()] = 0;
+	if (worldmap[monsters[mons_id]->getLocX() + xpath][monsters[mons_id]->getLocY()] == 0 && xpath != 0) {
+		monsters[mons_id]->setLocX(monsters[mons_id]->getLocX() + xpath);
+	}
+	else if (worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY() + ypath] == 0 && ypath != 0) {
+		monsters[mons_id]->setLocY(monsters[mons_id]->getLocY() + ypath);
+	}
+	worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY()] = monsters[mons_id]->getHealth();
+}
+
+void Map::moveToPlayer_TypeB(const int mons_id) {
+	int xpath = worldclock->roundup(static_cast<double>(player->getLocX() - monsters[mons_id]->getLocX()) / MAP_WIDTH);
+	int ypath = worldclock->roundup(static_cast<double>(player->getLocY() - monsters[mons_id]->getLocY()) / MAP_HEIGHT);
+
+	worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY()] = 0;
+	if (worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY() + ypath] == 0 && ypath != 0) {
+		monsters[mons_id]->setLocY(monsters[mons_id]->getLocY() + ypath);
+	}
+	else if (worldmap[monsters[mons_id]->getLocX() + xpath][monsters[mons_id]->getLocY()] == 0 && xpath != 0) {
+		monsters[mons_id]->setLocX(monsters[mons_id]->getLocX() + xpath);
+	}
+	worldmap[monsters[mons_id]->getLocX()][monsters[mons_id]->getLocY()] = monsters[mons_id]->getHealth();
+}
+
+void Map::respawnWhenDie(const int i) {
+	if (monsters[i]->getHealth() == 0) {
+		worldmap[monsters[i]->getLocX()][monsters[i]->getLocY()] = 0;
+		monsters[i]->setHP();
+		monsters[i]->setLocation(worldmap);
+	}
+	worldmap[monsters[i]->getLocX()][monsters[i]->getLocY()] = monsters[i]->getHealth();
+}
+
+void Map::enterDialogue(const int i) {
+	if (monsters[i]->getLocX() == player->getLocX() && monsters[i]->getLocY() == player->getLocY()) {
+		cout << "Player fight with " << monsters[i]->getType() << endl;
+		cout << monsters[i]->getType() << ": " << monsters[i]->getHealth() << " - " << player->getAtk() << " = ";
+		monsters[i]->reduceHP(player->getAtk());
+		cout << monsters[i]->getHealth() << endl;
+		cout << "Player: " << player->getHP() << " - " << monsters[i]->getAtk() << " = ";
+		gameover = player->receivedDamage(monsters[i]->getAtk());
+		cout << player->getHP() << endl;
+	}
+}
+
+void Map::movementRandomizer(const int i) {
+	int type_selector = rand() % 2 + 1;
+	if (type_selector == 1) {
+		this->moveToPlayer_TypeA(i);
+	}
+	else if (type_selector == 2) {
+		this->moveToPlayer_TypeB(i);
+	}
 }

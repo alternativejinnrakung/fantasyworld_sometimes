@@ -9,7 +9,7 @@ public:
 		mons = input_monsters;
 	}
 	T getMonster();
-	void setMonster(int monster_quantity);
+	void setMonster(const int monster_quantity);
 };
 
 template<class T>
@@ -18,7 +18,7 @@ T SpawnPoint<T>::getMonster() {
 }
 
 template<class T>
-void SpawnPoint<T>::setMonster(int monster_quantity) {
+void SpawnPoint<T>::setMonster(const int monster_quantity) {
 	for (int i = 0; i < monster_quantity; i++) {
 		mons.push_back(make_shared<Monster>());
 	}

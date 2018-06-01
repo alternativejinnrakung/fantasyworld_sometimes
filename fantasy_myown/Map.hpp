@@ -43,5 +43,10 @@ public:
 	void drawMap();
 	void updateMap();
 	void activeInput();
+	void moveToPlayer_TypeA(const int mons_id);
+	void moveToPlayer_TypeB(const int mons_id);
+	void respawnWhenDie(const int i);
+	void enterDialogue(const int i);
+	void movementRandomizer(const int i);
 };
 

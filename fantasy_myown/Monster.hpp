@@ -17,6 +17,9 @@
 class Monster
 {
 private:
+	const std::string TEXTNAME = "monster_data.txt";
+	const std::string MONSTER_TYPE[2] = { "Zombie","Orc" };
+	const int NO_REBORN_STATE = -1;
 	int health;
 	int attack;
 	int locX, locY;
@@ -34,4 +37,6 @@ public:
 	int getAtk();
 	std::string getType();
 	void init_monsterdata();
+	void setLocX(const int x);
+	void setLocY(const int y);
 };
